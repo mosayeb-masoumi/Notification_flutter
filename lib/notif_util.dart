@@ -1,8 +1,10 @@
 
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:notification_flutter/second_page.dart';
 // import 'package:toast/toast.dart';
 
 class NotificationUtil {
@@ -12,16 +14,21 @@ class NotificationUtil {
   NotificationUtil(BuildContext context) {
     // final settingsAndroid = AndroidInitializationSettings('assets/images/apple.png');
     final settingsAndroid = AndroidInitializationSettings("@mipmap/apple");
-    final settingsIOS = IOSInitializationSettings(onDidReceiveLocalNotification: (id, title, body, payload) => onSelectNotification(context));
+    final settingsIOS = IOSInitializationSettings(onDidReceiveLocalNotification: (id, title, body, payload) => onSelectNotification("payload",context));
     notifications.initialize(InitializationSettings(android: settingsAndroid, iOS: settingsIOS),
         onSelectNotification: (context) async => onSelectNotification);
   }
 
 
-  Future onSelectNotification(BuildContext context) async {
+  Future onSelectNotification(String payload , BuildContext context) async {
 
-    final int ss = 0;
-
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => SecondPage()),
+    // );
+    if (payload != null) {
+      debugPrint('notification payload: ' + payload);
+    }
   }
 
   // Future<void> showCheckOutNotify([int? maximumCheckoutHours]) async {
