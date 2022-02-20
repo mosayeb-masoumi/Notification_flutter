@@ -1,16 +1,19 @@
-import 'package:flutter/material.dart';
-import 'package:notification_flutter/local_notif/notification_api.dart';
-import 'package:notification_flutter/second_page.dart';
 
-class LocalNotifPage extends StatefulWidget {
-  const LocalNotifPage({Key? key}) : super(key: key);
+import 'package:flutter/material.dart';
+import 'package:notification_flutter/local_simple_expandable_notif/local_expandable_notification_api.dart';
+import 'package:notification_flutter/local_simple_expandable_notif/local_simple_notification_api.dart';
+
+
+import '../second_page.dart';
+
+class LocalSimpleExpandableNotifPage extends StatefulWidget {
+  const LocalSimpleExpandableNotifPage({Key? key}) : super(key: key);
 
   @override
-  _LocalNotifPageState createState() => _LocalNotifPageState();
+  _LocalSimpleExpandableNotifPageState createState() => _LocalSimpleExpandableNotifPageState();
 }
 
-class _LocalNotifPageState extends State<LocalNotifPage> {
-
+class _LocalSimpleExpandableNotifPageState extends State<LocalSimpleExpandableNotifPage> {
   //https://www.youtube.com/watch?v=bRy5dmts3X8
 
 
@@ -19,12 +22,12 @@ class _LocalNotifPageState extends State<LocalNotifPage> {
     super.initState();
 
     // for click notif
-    NotificationApi.init(initScheduled: true);
+    LocalSimpleNotificationApi.init(initScheduled: true);
     listenNotifications();
   }
 
   void listenNotifications() {
-    NotificationApi.onNotifications.stream.listen(onclickNotification);
+    LocalSimpleNotificationApi.onNotifications.stream.listen(onclickNotification);
   }
 
   void onclickNotification(String? payload) {
@@ -46,11 +49,11 @@ class _LocalNotifPageState extends State<LocalNotifPage> {
             ),
             RaisedButton(
                 child: Text("Simple Local Notification"), onPressed: () {
-                  NotificationApi.showNotification(
-                    title: "its title",
-                    body: "its body",
-                    payload: "its payload",
-                  );
+              LocalSimpleNotificationApi.showNotification(
+                title: "its title",
+                body: "its body",
+                payload: "its payload",
+              );
             }),
             SizedBox(
               height: 10,
@@ -59,36 +62,7 @@ class _LocalNotifPageState extends State<LocalNotifPage> {
             RaisedButton(
                 child: Text("Scheduled Notif after 12 sec"), onPressed: () {
 
-              NotificationApi.showScheduledNotification(
-                title: "its Scheduled title",
-                body: "its Scheduled body",
-                payload: "its Scheduled payload",
-                scheduledDate: DateTime.now().add(Duration(seconds: 12)),
-              );
-
-
-              final snackbar = SnackBar(
-                  content: Text(
-                      "sceduled in 12 seconds",
-                      style: TextStyle(fontSize: 16),
-                  ),
-              backgroundColor: Colors.green,
-              );
-
-              ScaffoldMessenger.of(context)
-              ..removeCurrentSnackBar()
-              ..showSnackBar(snackbar);
-            }),
-
-            SizedBox(
-              height: 10,
-            ),
-
-
-            RaisedButton(
-                child: Text("Scheduled Notif Daily"), onPressed: () {
-
-              NotificationApi.showScheduledNotification(
+              LocalSimpleNotificationApi.showScheduledNotification(
                 title: "its Scheduled title",
                 body: "its Scheduled body",
                 payload: "its Scheduled payload",
@@ -109,6 +83,49 @@ class _LocalNotifPageState extends State<LocalNotifPage> {
                 ..showSnackBar(snackbar);
             }),
 
+            SizedBox(
+              height: 10,
+            ),
+
+
+            RaisedButton(
+                child: Text("Scheduled Notif Daily"), onPressed: () {
+
+              LocalSimpleNotificationApi.showScheduledNotification(
+                title: "its Scheduled title",
+                body: "its Scheduled body",
+                payload: "its Scheduled payload",
+                scheduledDate: DateTime.now().add(Duration(seconds: 12)),
+              );
+
+
+              final snackbar = SnackBar(
+                content: Text(
+                  "sceduled in 12 seconds",
+                  style: TextStyle(fontSize: 16),
+                ),
+                backgroundColor: Colors.green,
+              );
+
+              ScaffoldMessenger.of(context)
+                ..removeCurrentSnackBar()
+                ..showSnackBar(snackbar);
+            }),
+
+
+            SizedBox(
+              height: 10,
+            ),
+
+            RaisedButton(
+                child: Text("Local Expandable Notification"), onPressed: () {
+              LocalExpandableNotificationApi.showNotification(
+                title: "its title",
+                body: "its body",
+                image: "https://clipart-best.com/img/mario/mario-clip-art-5.png",
+                payload: "its payload",
+              );
+            }),
 
           ],
         ),

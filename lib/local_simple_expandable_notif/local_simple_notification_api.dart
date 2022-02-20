@@ -5,11 +5,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 
-
-
-
-
-class NotificationApi {
+class LocalSimpleNotificationApi {
   static final _notifications = FlutterLocalNotificationsPlugin();
   static final onNotifications = BehaviorSubject<String?>();
 
@@ -19,6 +15,10 @@ class NotificationApi {
         "channel id",
         "channel name",
         importance: Importance.max,
+        priority: Priority.high,
+        channelShowBadge: true,
+        icon: '@mipmap/apple',
+        largeIcon: DrawableResourceAndroidBitmap('@mipmap/apple'),
       ),
       iOS: IOSNotificationDetails(),
     );
@@ -26,10 +26,9 @@ class NotificationApi {
 
   // onClick
   static Future init({bool initScheduled = false}) async {
-
     final android = AndroidInitializationSettings("@mipmap/ic_launcher");
     final iOS = IOSInitializationSettings();
-    final settings = InitializationSettings(android: android , iOS: iOS);
+    final settings = InitializationSettings(android: android, iOS: iOS);
 
     await _notifications.initialize(
       settings,
@@ -38,16 +37,12 @@ class NotificationApi {
       },
     );
 
-
-    if(initScheduled){
+    if (initScheduled) {
       tz.initializeTimeZones();
       final locationName = await FlutterNativeTimezone.getLocalTimezone();
       tz.setLocalLocation(tz.getLocation(locationName));
     }
-
   }
-
-
 
   static Future showNotification({
     int id = 0,
@@ -63,7 +58,6 @@ class NotificationApi {
         payload: payload,
       );
 
-
   /*****************************delay***********************************/
   static Future showScheduledNotification({
     int id = 0,
@@ -76,13 +70,14 @@ class NotificationApi {
         id,
         title,
         body,
-        tz.TZDateTime.from(scheduledDate,tz.local),
+        tz.TZDateTime.from(scheduledDate, tz.local),
         await _notificationDetails(),
         androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
       );
 
-/*****************************daily***********************************/
+  /*****************************daily***********************************/
   static Future showScheduledDailyNotification({
     int id = 0,
     String? title,
@@ -91,16 +86,15 @@ class NotificationApi {
     required DateTime scheduledDate,
   }) async =>
       _notifications.zonedSchedule(
-        id,
-        title,
-        body,
-        _scheduleDaily(Time(8 , 30 , 45)), //8:30:45  AM
-        await _notificationDetails(),
-        androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-
-        matchDateTimeComponents: DateTimeComponents.time
-      );
+          id,
+          title,
+          body,
+          _scheduleDaily(Time(8, 30, 45)), //8:30:45  AM
+          await _notificationDetails(),
+          androidAllowWhileIdle: true,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          matchDateTimeComponents: DateTimeComponents.time);
 
   static tz.TZDateTime _scheduleDaily(Time time) {
     final now = tz.TZDateTime.now(tz.local);
@@ -116,12 +110,10 @@ class NotificationApi {
 
     return scheduleDate.isBefore(now)
         ? scheduleDate.add(Duration(days: 1))
-        :scheduleDate;
+        : scheduleDate;
   }
 
-
-
-/*****************************weekly***********************************/
+  /*****************************weekly***********************************/
   static Future showScheduledweeklyNotification({
     int id = 0,
     String? title,
@@ -133,23 +125,21 @@ class NotificationApi {
           id,
           title,
           body,
-          _scheduleWeekly(Time(8 , 30 , 45) , days:[DateTime.monday , DateTime.tuesday]), //8:30:45  AM
+          _scheduleWeekly(Time(8, 30, 45),
+              days: [DateTime.monday, DateTime.tuesday]),
+          //8:30:45  AM
           await _notificationDetails(),
           androidAllowWhileIdle: true,
-          uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-
-          matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime
-      );
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime);
 
   static tz.TZDateTime _scheduleWeekly(Time time, {List<int>? days}) {
     tz.TZDateTime scheduleDate = _scheduleDaily(time);
 
-    while(!days!.contains(scheduleDate.weekday)){
+    while (!days!.contains(scheduleDate.weekday)) {
       scheduleDate = scheduleDate.add(Duration(days: 1));
     }
     return scheduleDate;
   }
-
-
-
 }

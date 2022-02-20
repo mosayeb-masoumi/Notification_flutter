@@ -1,36 +1,13 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:notification_flutter/notif_util.dart';
-import 'package:notification_flutter/second_page.dart';
+import 'firebase_simple_expandable_notif/firebase_simple_expandable_notif_page.dart';
 
-import 'package:http/http.dart' as http;
-import 'package:notification_flutter/splash_page.dart';
-
-// import 'package:toast/toast.dart';
 
 
 void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
-  /**move to home page**/
-  // var message   = FirebaseMessaging.instance;
-  // var token = await message.getToken();
-  // print("user token is $token");
-  //
-  // FirebaseMessaging.onMessage.listen((event) {
-  //   print("message received ${event.data} ${event.notification!.title}");
-  // });
-  //
-  // FirebaseMessaging.onMessageOpenedApp.listen((event) {
-  //   print("message clicked");
-  // });
-  /**move to home page**/
 
   runApp(const MyApp());
 }
@@ -47,7 +24,7 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.blue,
       ),
-      home:  SplashPage(),
+      home:  FirebaseSimpleExpandableNotifPage(),
     );
   }
 }
