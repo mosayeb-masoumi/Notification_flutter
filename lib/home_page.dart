@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:notification_flutter/notif_util.dart';
 import 'package:notification_flutter/second_page.dart';
 
+import 'local_expandable_notif/notification_api_expandable.dart';
+
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key,}) : super(key: key);
 
@@ -36,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
 
-      key: _scaffoldKey,                   /// add the key
+      key: _scaffoldKey,        /// add the key
 
 
       appBar: AppBar(
@@ -104,7 +106,14 @@ class _MyHomePageState extends State<MyHomePage> {
       // )));
 
       print("message received ${event.data} ${event.notification!.title}");
-      showExpandableNotif();
+      // showExpandableNotif();
+
+      NotificationExpandableApi.showNotification(
+        title: "expandable title",
+        body: "expandable body",
+        image: "https://clipart-best.com/img/mario/mario-clip-art-5.png",
+        payload: "its expandable payload",
+      );
 
     });
 
@@ -124,6 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void showExpandableNotif() async {
+
     final ByteArrayAndroidBitmap largeIcon = ByteArrayAndroidBitmap(
       // await _getByteArrayFromUrl('https://via.placeholder.com/48x48'));
         await _getByteArrayFromUrl('https://clipart-best.com/img/mario/mario-clip-art-5.png'));

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:notification_flutter/home_page.dart';
 import 'package:notification_flutter/local_notif/local_notif_page.dart';
 
+import 'local_expandable_notif/local_expandable_notif_page.dart';
+
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
 
@@ -17,9 +19,9 @@ class _SplashPageState extends State<SplashPage> {
       body: Center(
         child: Column(
           children: [
-            SizedBox(height: 40,),
+            SizedBox(height: 100,),
             RaisedButton(
-                child: Text("firebase notif"),
+                child: Text("firebase notif expandable without click"),
                 onPressed: (){
                   Navigator.push(
                         context,
@@ -27,9 +29,9 @@ class _SplashPageState extends State<SplashPage> {
                       );
                 }),
 
-            SizedBox(height: 40,),
+            SizedBox(height: 10,),
             RaisedButton(
-                child: Text("local and schedule notif"),
+                child: Text("local and schedule notif  clickable  Johannes Milke"),
                 onPressed: (){
 
                   Navigator.push(
@@ -38,6 +40,21 @@ class _SplashPageState extends State<SplashPage> {
                   );
 
                 }),
+
+
+            SizedBox(height: 10,),
+            RaisedButton(
+                child: Text("local expandable clickable  Johannes Milke"),
+                onPressed: (){
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) =>  LocalExpandableNotifPage()),
+                  );
+
+                }),
+
+
           ],
         ),
       ),
