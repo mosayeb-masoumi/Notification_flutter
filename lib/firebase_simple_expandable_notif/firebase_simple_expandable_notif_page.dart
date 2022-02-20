@@ -40,7 +40,6 @@ class _FirebaseSimpleExpandableNotifPageState
   }
 
 
-
   // hangle firebase notif
   void _handleFirebaseNotif() async {
     var message = FirebaseMessaging.instance;
@@ -49,27 +48,33 @@ class _FirebaseSimpleExpandableNotifPageState
 
     FirebaseMessaging.onMessage.listen((event) {
       print("message received ${event.data} ${event.notification!.title}");
-      // showExpandableNotif();
 
-      /***********************firebase expandable notif****************************/
-      // FirebaseExpandableNotificationApi.showNotification(
-      //   title: "firebase expandable title",
-      //   body: "firebase expandable body",
-      //   image: "https://clipart-best.com/img/mario/mario-clip-art-5.png",
-      //   payload: "its firebase expandable payload",
-      // );
-
-
-      /***********************firebase simple notif****************************/
-      FirebaseSimpleNotificationApi.showNotification(
-        title: "firebase simple title",
-        body: "firebase simple body",
-        payload: "its firebase simple payload",
-      );
+      /******************below line to show expandable notification******************/
+      showFirebaseExpandableNotif(event.notification!.title , event.notification!.body);
+      /******************below line to show simple notification******************/
+      // showFirebaseSimpleNotif(event.notification!.title , event.notification!.body);
 
     });
 
   }
+
+  void showFirebaseExpandableNotif(String? title , String? body) {
+    FirebaseExpandableNotificationApi.showNotification(
+      title: title,
+      body: body,
+      image: "https://clipart-best.com/img/mario/mario-clip-art-5.png",
+      payload: "its firebase expandable payload",
+    );
+  }
+
+  void showFirebaseSimpleNotif(String? title , String? body) {
+    FirebaseSimpleNotificationApi.showNotification(
+      title: title,
+      body: body,
+      payload: "its firebase simple payload",
+    );
+  }
+
 
 
   @override
@@ -96,4 +101,6 @@ class _FirebaseSimpleExpandableNotifPageState
       ),
     );
   }
+
+
 }
